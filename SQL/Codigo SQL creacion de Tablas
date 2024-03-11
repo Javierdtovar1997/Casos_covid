@@ -1,0 +1,67 @@
+DROP TABLE IF EXISTS Cases;
+DROP TABLE IF EXISTS Municipality;
+DROP TABLE IF EXISTS Department;
+DROP TABLE IF EXISTS Department;
+DROP TABLE IF EXISTS Gender;
+DROP TABLE IF EXISTS Status;
+DROP TABLE IF EXISTS Type_Contagion;
+
+#Al requerir la creación de tablas, se elimina cualquier posible interferencia para el funcionamiento de la base de datos
+
+CREATE TABLE Department (
+    id_department     INT NOT NULL,
+    name        VARCHAR(45) UNIQUE,
+    PRIMARY KEY(id_department)
+);
+
+CREATE TABLE  Municipality(
+    id_municipality    INT NOT NULL,
+    name         VARCHAR(200) UNIQUE,
+    id_department INT,
+    PRIMARY KEY(id_municipality),
+
+     CONSTRAINT FOREIGN KEY (id_department) REFERENCES Department (id_department)
+      ON DELETE CASCADE ON UPDATE CASCADE	
+);
+
+CREATE TABLE Gender (
+    id_gender   INT NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(45) UNIQUE,
+    PRIMARY KEY(id_gender)
+);
+
+CREATE TABLE Status (
+    id_status   INT NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(45) UNIQUE,
+    PRIMARY KEY(id_status)
+);
+
+CREATE TABLE Type_Contagion (
+    id_type_Contagion   INT NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(45) UNIQUE,
+    PRIMARY KEY(id_type_Contagion)
+);
+
+CREATE TABLE Cases (
+    id_case            INT,
+    id_municipality    INT,
+    age                INT,
+    id_gender          INT,
+    id_type_Contagion  INT,
+    id_status          INT,
+    date_symptom       DATETIME,
+    date_death         DATETIME,
+    date_diagnosis     DATETIME,
+    date_recovery      DATETIME,
+
+    CONSTRAINT FOREIGN KEY (id_municipality) REFERENCES Municipality (id_municipality)
+       ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (id_gender) REFERENCES Gender (id_gender)
+       ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (id_type_Contagion) REFERENCES Type_Contagion (id_type_Contagion)
+       ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FOREIGN KEY (id_status) REFERENCES Status (id_status)
+       ON DELETE CASCADE ON UPDATE CASCADE,
+
+    PRIMARY KEY (id_case)
+);
